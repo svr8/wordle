@@ -2,7 +2,6 @@ import Header from "@/modules/game/components/header"
 import Help from "./components/help"
 import { useDispatch, useSelector } from "react-redux"
 import Results from "./components/results"
-import Settings from "./components/settings"
 import Board from "./components/board"
 import { Letter } from "./lib/letter"
 import { useEffect, useState } from "react"
@@ -142,7 +141,6 @@ export default function Game() {
     {popupState == 'startmenu' && <StartMenu></StartMenu>}
     {popupState == 'help' && <Help></Help>}
     {popupState == 'results' && <Results></Results>}
-    {popupState == 'settings' && <Settings></Settings>}
     <br/>
     <br/>
     <br/>
@@ -172,7 +170,7 @@ const calculateResults = (isGameWon: boolean, oldResults: any) => {
   newResults.totalPlayed += 1
   newResults.totalWon += isGameWon ? 1 : 0
   newResults.winStreak = isGameWon ? newResults.winStreak + 1 : 0
-  newResults.maxStream = Math.max(newResults.maxStream, newResults.winStreak)
+  newResults.maxStreak = Math.max(newResults.maxStreak, newResults.winStreak)
   newResults.lastGameWon = isGameWon
 
   return newResults

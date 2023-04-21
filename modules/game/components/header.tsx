@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { useDispatch } from 'react-redux'
-import { showHelp, showResults, showSettings } from '@/store/game/slice'
+import { showHelp, showResults } from '@/store/game/slice'
 
 export default function Header() {
   const dispatch = useDispatch()
@@ -11,7 +11,6 @@ export default function Header() {
     <div className="flex justify-end">
       <div onClick={() => dispatch(showHelp())}><Image src="images/question-mark.svg" alt="" width={35} height={35} className="hover:cursor-pointer m-2"/></div>
       <div onClick={() => dispatch(showResults())}><Image src="images/ranking.svg" alt="" width={35} height={35} className="hover:cursor-pointer m-2"/></div>
-      <div onClick={() => dispatch(showSettings())}><Image src="images/setting.svg" alt="" width={35} height={35} className="hover:cursor-pointer m-2"/></div>
     </div>
   </header>
   )

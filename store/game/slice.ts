@@ -38,11 +38,6 @@ export const gameSlice = createSlice({
       state.previousPlayState = state.playState
       state.playState = 'paused'
     },
-    showSettings: state => {
-      state.popupState = 'settings'
-      state.previousPlayState = state.playState
-      state.playState = 'paused'
-    },
     showStartMenu: state => {
       state.popupState = 'startmenu'
       state.playState = 'stopped'
@@ -66,6 +61,6 @@ export const gameSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { pressLetter, showHelp, showResults, showSettings, closePopup, setWordLength, setResults, startGame, stopGame, showStartMenu } = gameSlice.actions
+export const { pressLetter, showHelp, showResults, closePopup, setWordLength, setResults, startGame, stopGame, showStartMenu } = gameSlice.actions
 
 export default gameSlice.reducer
