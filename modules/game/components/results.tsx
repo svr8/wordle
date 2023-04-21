@@ -9,13 +9,18 @@ export default function Results() {
   const playState = useSelector((state: any) => state.game.playState)
   const previousPlayState = useSelector((state: any) => state.game.previousPlayState)
 
+  console.log('results', results)
+  console.log('playState', playState)
   return <>
       <PopupBox title="Results">
         <div>
           <br/>
+          {results.lastGameWon != null && previousPlayState == 'stopped' && 
           <div className="flex flex-col items-center justify-center font-normal text-2xl">
-            WINNER!
-          </div>
+          WINNER!
+        </div>
+        }
+          
 
           <br/>
 
