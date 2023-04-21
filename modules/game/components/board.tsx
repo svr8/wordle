@@ -1,25 +1,25 @@
 import { useEffect, useState } from "react";
 import Letters from "./letters";
 import { Letter } from "../lib/letter";
-import { generateEmptyWord, isKeyboardEventLetter } from "../lib/util";
+import { generateEmptyWord } from "../lib/util";
 import Keyboard from "./keyboard";
 
-export default function Board({wordLength, initialWords = [[]], letterHistory = [], onLetterPress = (_) => {}}: {wordLength: number, initialWords: Letter[][], letterHistory: Letter[], onLetterPress: (letter: Letter) => void}) {
+export default function Board({wordLength, initialWords = [[]], letterHistory = []}: {wordLength: number, initialWords: Letter[][], letterHistory: Letter[]}) {
   
   const [wordList, setWordList] = useState(initialWords)
 
-  const onKeyPress = (event: KeyboardEvent) => {
-    const letterMatch = letterHistory.find((letter) => letter.value.toUpperCase() == event.key.toUpperCase())
-    if (letterMatch) {
-      onLetterPress(letterMatch)
-    } else if (isKeyboardEventLetter(event)) {
-      onLetterPress({value: event.key.toUpperCase(), state: 'incorrect'})
-    }
-    else if (['Backspace', 'Enter'].includes(event.code)) {
-        onLetterPress({value: event.code, state: 'incorrect'})
-    }
+  // const onKeyPress = (event: KeyboardEvent) => {
+  //   const letterMatch = letterHistory.find((letter) => letter.value.toUpperCase() == event.key.toUpperCase())
+  //   if (letterMatch) {
+  //     onLetterPress(letterMatch)
+  //   } else if (isKeyboardEventLetter(event)) {
+  //     onLetterPress({value: event.key.toUpperCase(), state: 'incorrect'})
+  //   }
+  //   else if (['Backspace', 'Enter'].includes(event.code)) {
+  //       onLetterPress({value: event.code, state: 'incorrect'})
+  //   }
     
-  }
+  // }
   
   useEffect(() => {
     const filledWordList: Letter[][] = [...initialWords]
@@ -39,7 +39,6 @@ export default function Board({wordLength, initialWords = [[]], letterHistory = 
 
     <Keyboard 
       letterStates={letterHistory}
-      onKeyPress={onKeyPress}
     ></Keyboard>
   </>
 }
