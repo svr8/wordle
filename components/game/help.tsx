@@ -1,7 +1,7 @@
 import Letters from "@/modules/game/components/letters"
 import PopupBox from "@/modules/game/components/popupbox"
-import { Letter } from "../lib/letter"
-import { EXAMPLE_LETTER_TAILWIND_CLASSNAME } from "../lib/config"
+import { Letter } from "../../lib/game/letter"
+import { EXAMPLE_LETTER_TAILWIND_CLASSNAME } from "../../lib/game/config"
 
 export default function Help() {
   const example1: Letter[] = [

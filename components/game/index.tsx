@@ -1,14 +1,14 @@
 import Header from "@/modules/game/components/header"
-import Help from "./components/help"
+import Help from "./help"
 import { useDispatch, useSelector } from "react-redux"
-import Results from "./components/results"
-import Board from "./components/board"
-import { Letter } from "./lib/letter"
+import Results from "./results"
+import Board from "../../modules/game/components/board"
+import { Letter } from "../../lib/game/letter"
 import { useEffect, useState } from "react"
-import StartMenu from "./components/startmenu"
+import StartMenu from "./startmenu"
 import { setResults, showResults, stopGame } from "@/store/game/slice"
 import { getRandomWord, isValidWord } from "@/lib/words"
-import { POPUP_ANIMATION_DELAY_MILLISECONDS } from "./lib/config"
+import { POPUP_ANIMATION_DELAY_MILLISECONDS } from "../../lib/game/config"
 
 export default function Game() {
   const dispatch = useDispatch()

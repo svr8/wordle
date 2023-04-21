@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import Letters from "./letters";
-import { Letter } from "../lib/letter";
-import { generateEmptyLetters, generateEmptyWord } from "../lib/util";
+import { Letter } from "../../../lib/game/letter";
+import { generateEmptyLetters, generateEmptyWord } from "../../../lib/game/util";
 import Keyboard from "./keyboard";
-import { BOARD_LETTER_TAILWIND_CLASSNAME } from "../lib/config";
+import { BOARD_LETTER_TAILWIND_CLASSNAME } from "../../../lib/game/config";
 
 export default function Board({wordLength, initialWords = [[]], letterHistory = []}: {wordLength: number, initialWords: Letter[][], letterHistory: Letter[]}) {
   

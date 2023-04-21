@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Letter } from "../lib/letter";
+import { Letter } from "../../../lib/game/letter";
 import Letters from "./letters";
-import { isKeyboardEventLetter } from "../lib/util";
+import { isKeyboardEventLetter } from "../../../lib/game/util";
 import { pressLetter } from "@/store/game/slice"
 import { useDispatch } from "react-redux";
-import { KEYBOARD_LETTER_TAILWIND_CLASSNAME } from "../lib/config";
+import { KEYBOARD_LETTER_TAILWIND_CLASSNAME } from "../../../lib/game/config";
 
 export default function Keyboard({letterStates}: {letterStates: Letter[]}) {
   const dispatch = useDispatch()

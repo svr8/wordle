@@ -1,5 +1,5 @@
-import { Letter } from "../lib/letter"
-import { LETTER_CORRECT_STYLE, LETTER_DEFAULT_STYLE, LETTER_INCORRECT_STYLE, LETTER_KEYBOARD_DEFAULT_STYLE, LETTER_PARTIALLY_CORRECT_STYLE } from "../lib/config"
+import { Letter } from "../../../lib/game/letter"
+import { LETTER_CORRECT_STYLE, LETTER_DEFAULT_STYLE, LETTER_INCORRECT_STYLE, LETTER_KEYBOARD_DEFAULT_STYLE, LETTER_PARTIALLY_CORRECT_STYLE } from "../../../lib/game/config"
 import { useDispatch } from "react-redux"
 import { pressLetter } from "@/store/game/slice"
 
