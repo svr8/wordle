@@ -21,23 +21,23 @@ export default function Results() {
 
           <div className="grid grid-cols-4 grid-flow-row gap-4 justify-evenly">
             <div className="grid grid-rows-2 grid-flow-col gap-2">
-              <div className="text-4xl font-semibold">2</div>
+              <div className="text-4xl font-semibold">{results.totalPlayed}</div>
               <div className="text-xs font-normal">Played</div>
             </div>
 
             <div className="grid grid-rows-2 grid-flow-col gap-2">
-              <div className="text-4xl font-semibold">50%</div>
+              <div className="text-4xl font-semibold">{calculateWinPercentage(results.totalWon, results.totalPlayed)}%</div>
               <div className="text-xs font-normal">Win %</div>
             </div>
 
             <div className="grid grid-rows-2 grid-flow-col gap-2">
-              <div className="text-4xl font-semibold">2</div>
-              <div className="text-xs font-normal">Played</div>
+              <div className="text-4xl font-semibold">{results.winStreak}</div>
+              <div className="text-xs font-normal">Current Streak</div>
             </div>
 
             <div className="grid grid-rows-2 grid-flow-col gap-2">
-              <div className="text-4xl font-semibold">2</div>
-              <div className="text-xs font-normal">Played</div>
+              <div className="text-4xl font-semibold">{results.maxStreak}</div>
+              <div className="text-xs font-normal">Max Streak</div>
             </div>
           </div>
 
@@ -58,4 +58,12 @@ export default function Results() {
         </div>
       </PopupBox>
   </>
+}
+
+const calculateWinPercentage = (totalWon: number, totalPlayed: number) => {
+  if (totalPlayed == 0) {
+    return 0
+  }
+
+  return totalWon / totalPlayed * 100
 }

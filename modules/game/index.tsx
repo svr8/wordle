@@ -7,7 +7,7 @@ import Board from "./components/board"
 import { Letter } from "./lib/letter"
 import { useEffect, useState } from "react"
 import StartMenu from "./components/startmenu"
-import { showResults, stopGame } from "@/store/game/slice"
+import { setResults, showResults, stopGame } from "@/store/game/slice"
 import { getRandomWord, isValidWord } from "@/lib/words"
 
 export default function Game() {
@@ -81,14 +81,16 @@ export default function Game() {
           // increase attemptCount
           setAttemptCount(attemptCount+1)
 
-          // end game if player wins
+          // calculate attempt result
+          let gameResult: string = 'none'
           if (currentWord.toUpperCase() == correctWord.toUpperCase()) {
-            dispatch(stopGame())
-            dispatch(showResults())
+            gameResult = 'win'
+          } else if(attemptCount > wordLength) {
+            gameResult = 'lose'
           }
-
-          // end game if attemptCount reaches wordLimit+1
-          if (attemptCount == wordLength+1) {
+          if (gameResult != 'none') { // game has ended
+            const newResults = calculateResults(gameResult == 'win', results)
+            dispatch(setResults(newResults))
             dispatch(stopGame())
             dispatch(showResults())
           }
@@ -162,6 +164,18 @@ export default function Game() {
     </>}
     
   </>
+}
+
+const calculateResults = (isGameWon: boolean, oldResults: any) => {
+  const newResults = { ...oldResults }
+
+  newResults.totalPlayed += 1
+  newResults.totalWon += isGameWon ? 1 : 0
+  newResults.winStreak = isGameWon ? newResults.winStreak + 1 : 0
+  newResults.maxStream = Math.max(newResults.maxStream, newResults.winStreak)
+  newResults.lastGameWon = isGameWon
+
+  return newResults
 }
 
 const getWordFromLetterList = (letterList: Letter[]) => {
