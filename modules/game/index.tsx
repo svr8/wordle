@@ -32,7 +32,7 @@ export default function Game() {
         setAttemptCount(1)
         setGuessLetterHistory([])
   
-        const randomWord = await getRandomWord(wordLength)
+        const randomWord = (await getRandomWord(wordLength)).word
         setCorrectWord(randomWord)
       } 
     }
@@ -50,13 +50,12 @@ export default function Game() {
 
       // check for 'running' playState
       if ('running' == playState) {
-        console.log('DEBUG #1', pressedLetter)
         // handle game logic
 
         // handle enter key
         if(pressedLetter.value == 'Enter') {
           const currentWord = getWordFromLetterList(attemptWordList[attemptCount-1])
-
+          
           // check word length
           if (currentWord.length != wordLength) {
             return
@@ -70,6 +69,7 @@ export default function Game() {
           // reveal current word status
           const revealLetters = compareAndGenerateRevealWord(currentWord, correctWord)
           const newAttemptWordList = attemptWordList.slice(attemptCount-1, attemptCount)
+          newAttemptWordList.pop()
           newAttemptWordList.push(revealLetters)
           setAttemptWordList(newAttemptWordList)
 
@@ -78,6 +78,12 @@ export default function Game() {
 
           // increase attemptCount
           setAttemptCount(attemptCount+1)
+
+          // end game if player wins
+          if (currentWord.toUpperCase() == correctWord.toUpperCase()) {
+            dispatch(stopGame())
+            dispatch(showResults())
+          }
 
           // end game if attemptCount reaches wordLimit+1
           if (attemptCount == wordLength+1) {
@@ -110,7 +116,6 @@ export default function Game() {
           const newAttemptWordList = attemptWordList.slice(0, attemptCount-1)
           newAttemptWordList.push(newAttemptWord)
           setAttemptWordList(newAttemptWordList)
-          console.log('DEBUG #2', newAttemptWordList)
         }
       }
     }
@@ -149,10 +154,13 @@ export default function Game() {
 }
 
 const getWordFromLetterList = (letterList: Letter[]) => {
-  return (letterList.map(letter => letter.value).join('')).toLowerCase()
+  return (letterList.map(letter => letter.value).join('')).toUpperCase()
 }
 
 const compareAndGenerateRevealWord = (guessedWord: string, correctWord: string): Letter[] => {
+  guessedWord = guessedWord.toUpperCase()
+  correctWord = correctWord.toUpperCase()
+
   const revealLetters: Letter[] = []
   const guessedWordAlphabets: any = {}
   for (let i = 97; i < 123; i++) {

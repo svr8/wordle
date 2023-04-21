@@ -1,33 +1,28 @@
 import { useEffect, useState } from "react";
 import Letters from "./letters";
 import { Letter } from "../lib/letter";
-import { generateEmptyWord } from "../lib/util";
+import { generateEmptyLetters, generateEmptyWord } from "../lib/util";
 import Keyboard from "./keyboard";
 
 export default function Board({wordLength, initialWords = [[]], letterHistory = []}: {wordLength: number, initialWords: Letter[][], letterHistory: Letter[]}) {
   
-  const [wordList, setWordList] = useState(initialWords)
+  const [wordList, setWordList] = useState<Letter[][]>(initialWords)
 
-  // const onKeyPress = (event: KeyboardEvent) => {
-  //   const letterMatch = letterHistory.find((letter) => letter.value.toUpperCase() == event.key.toUpperCase())
-  //   if (letterMatch) {
-  //     onLetterPress(letterMatch)
-  //   } else if (isKeyboardEventLetter(event)) {
-  //     onLetterPress({value: event.key.toUpperCase(), state: 'incorrect'})
-  //   }
-  //   else if (['Backspace', 'Enter'].includes(event.code)) {
-  //       onLetterPress({value: event.code, state: 'incorrect'})
-  //   }
-    
-  // }
-  
   useEffect(() => {
-    const filledWordList: Letter[][] = [...initialWords]
-    for (let remainingAttempts = wordLength+1 - initialWords.length; remainingAttempts > 0; remainingAttempts--) {
+    // const filledWordList: Letter[][] = [...initialWords]
+    
+    // populate remaining letters in last word as empty letters
+    const lastWord = [...initialWords[initialWords.length-1]]
+    lastWord.push(...generateEmptyLetters(lastWord.length, wordLength))
+    const filledWordList = [...initialWords.slice(0, initialWords.length-1), lastWord]
+
+    // populate remaining words as empty words
+    const extraFlag = filledWordList[filledWordList.length-1].length == 0 ? 1 : 0
+    for (let remainingAttempts = wordLength+extraFlag - filledWordList.length; remainingAttempts > 0; remainingAttempts--) {
       filledWordList.push(generateEmptyWord(wordLength))
     }
     setWordList(filledWordList)
-  }, [])
+  }, [initialWords])
 
   return <>
     {wordList.map((letters, index) => {
