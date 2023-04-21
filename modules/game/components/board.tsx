@@ -9,18 +9,19 @@ export default function Board({wordLength, initialWords = [[]], letterHistory = 
   const [wordList, setWordList] = useState<Letter[][]>(initialWords)
 
   useEffect(() => {
-    // const filledWordList: Letter[][] = [...initialWords]
-    
-    // populate remaining letters in last word as empty letters
+    console.log('initialWords', initialWords.length)
+    // populate empty letters as remaining letters in last word
     const lastWord = [...initialWords[initialWords.length-1]]
     lastWord.push(...generateEmptyLetters(lastWord.length, wordLength))
     const filledWordList = [...initialWords.slice(0, initialWords.length-1), lastWord]
 
-    // populate remaining words as empty words
+    // populate empty words as remaining words
     const extraFlag = filledWordList[filledWordList.length-1].length == 0 ? 1 : 0
     for (let remainingAttempts = wordLength+extraFlag - filledWordList.length; remainingAttempts > 0; remainingAttempts--) {
       filledWordList.push(generateEmptyWord(wordLength))
     }
+
+    // update word list
     setWordList(filledWordList)
   }, [initialWords])
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Letter } from "../lib/letter";
 import Letters from "./letters";
 import { isKeyboardEventLetter } from "../lib/util";
@@ -7,10 +7,9 @@ import { useDispatch } from "react-redux";
 
 export default function Keyboard({letterStates}: {letterStates: Letter[]}) {
   const dispatch = useDispatch()
-  
-  const row1 = getLettersFromString('QWERTYUIOP', letterStates)
-  const row2 = getLettersFromString('ASDFGHJKL', letterStates)
-  const row3 = getLettersFromString('↩ZXCVBNM⌫', letterStates)
+  const [row1, setRow1] = useState<Letter[]>(getLettersFromString('QWERTYUIOP', letterStates))
+  const [row2, setRow2] = useState<Letter[]>(getLettersFromString('ASDFGHJKL', letterStates))
+  const [row3, setRow3] = useState<Letter[]>(getLettersFromString('↩ZXCVBNM⌫', letterStates))
 
   const onKeyPress = (event: KeyboardEvent) => {
     const letterMatch = letterStates.find((letter) => letter.value.toUpperCase() == event.key.toUpperCase())
@@ -30,6 +29,13 @@ export default function Keyboard({letterStates}: {letterStates: Letter[]}) {
       document.removeEventListener('keydown', onKeyPress)
     }
   }, [])
+
+  useEffect(() => {
+    setRow1(getLettersFromString('QWERTYUIOP', letterStates))
+    setRow2(getLettersFromString('ASDFGHJKL', letterStates))
+    setRow3(getLettersFromString('↩ZXCVBNM⌫', letterStates))
+
+  }, [letterStates])
 
   return <>
     <Letters word={row1}></Letters>

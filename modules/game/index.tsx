@@ -33,6 +33,7 @@ export default function Game() {
         setGuessLetterHistory([])
   
         const randomWord = (await getRandomWord(wordLength)).word
+        console.log('correct word', randomWord)
         setCorrectWord(randomWord)
       } 
     }
