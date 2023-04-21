@@ -23,7 +23,7 @@ export default function Letters({word, tailwindClassname}: {word: Letter[], tail
         return <div 
           key={i} 
           style={style} 
-          className={`font-bold border-solid border-gray-500 border-2 text-center ${tailwindClassname}`}
+          className={`font-bold text-center rounded-sm ${tailwindClassname}`}
           onClick={() => onLetterClick(letter)}
         >{letter.value}</div>
       })}

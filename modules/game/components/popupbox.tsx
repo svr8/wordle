@@ -6,7 +6,7 @@ export default function PopupBox({children, title, isClosable = true}: {children
   const dispatch = useDispatch()
 
   return (
-  <div className="flex flex-col items-center justify-between p-8 z-50 shadow-lg shadow-gray-300">
+  <div className="flex flex-col items-center justify-between m-5 p-8 z-50 shadow-lg shadow-gray-300">
     <div className="flex items-center justify-between w-full">
       <div className="font-bold text-md font-serif text-center">{title}</div>
       {isClosable && <div onClick={() => dispatch(closePopup())}><Image src="images/close.svg" alt="" width={20} height={20} className="hover:cursor-pointer"/></div>}

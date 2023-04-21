@@ -3,7 +3,7 @@ import PopupBox from "@/modules/game/components/popupbox"
 import { Letter } from "../lib/letter"
 import { useDispatch } from "react-redux"
 import { setWordLength, startGame } from "@/store/game/slice"
-import { MAX_WORD_LENGTH } from "@/lib/words/const"
+import { MAX_WORD_LENGTH, MIN_WORD_LENGTH } from "@/lib/words/const"
 import { useState } from "react"
 import { EXAMPLE_LETTER_TAILWIND_CLASSNAME } from "../lib/config"
 
@@ -22,8 +22,14 @@ export default function StartMenu() {
   ]
 
   const handleWordLengthChange = (val: string) => {
+    if(val == '' || val == null) {
+      return
+    }
+    
     const wordLength = parseInt(val)
-    if (wordLength > MAX_WORD_LENGTH) {
+    if (wordLength<MIN_WORD_LENGTH || wordLength > MAX_WORD_LENGTH) {
+      alert(`Word length must be between ${MIN_WORD_LENGTH} and ${MAX_WORD_LENGTH}`)
+      setInputWordLength(5)
       return
     }
 
@@ -69,7 +75,8 @@ export default function StartMenu() {
             type="number" 
             min={3}
             max={MAX_WORD_LENGTH}
-            defaultValue={5}
+            defaultValue={inputWordLength}
+            value={inputWordLength}
             onChange={(e) => {handleWordLengthChange(e.target.value)}}
             onKeyDown={(e: any) => { handleWordLengthChange(e.target.value)}}
           ></input>

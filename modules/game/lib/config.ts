@@ -20,9 +20,10 @@ export const LETTER_KEYBOARD_DEFAULT_STYLE = {
 
 export const LETTER_DEFAULT_STYLE = {
   backgroundColor: '#ffffff',
-  color: 'black'
+  color: 'black',
+  border: '2px solid #787c7e',
 }
 
 export const BOARD_LETTER_TAILWIND_CLASSNAME = 'w-12 h-12 mx-1 text-xl py-2'
 export const EXAMPLE_LETTER_TAILWIND_CLASSNAME = 'w-10 h-10 mx-1 text-xl py-1'
-export const KEYBOARD_LETTER_TAILWIND_CLASSNAME = 'w-8 h-12 mx-1 text-xl py-2 hover:cursor-pointer'
+export const KEYBOARD_LETTER_TAILWIND_CLASSNAME = 'sm:w-8 sm:h-12 md:w-12 md:h-12 mx-1 text-xl py-2 hover:cursor-pointer'
