@@ -1,20 +1,33 @@
 import { useEffect, useState } from "react";
 import Letters from "./letters";
 import { Letter } from "../lib/letter";
-import { generateEmptyWord } from "../lib/util";
+import { generateEmptyWord, isKeyboardEventLetter } from "../lib/util";
 import Keyboard from "./keyboard";
 
-export default function Board({wordLength, initialWords = [[]]}: {wordLength: number, initialWords: [Letter[]]}) {
+export default function Board({wordLength, initialWords = [[]], letterHistory = [], onLetterPress = (_) => {}}: {wordLength: number, initialWords: Letter[][], letterHistory: Letter[], onLetterPress: (letter: Letter) => void}) {
   
   const [wordList, setWordList] = useState(initialWords)
+
+  const onKeyPress = (event: KeyboardEvent) => {
+    const letterMatch = letterHistory.find((letter) => letter.value.toUpperCase() == event.key.toUpperCase())
+    if (letterMatch) {
+      onLetterPress(letterMatch)
+    } else if (isKeyboardEventLetter(event)) {
+      onLetterPress({value: event.key.toUpperCase(), state: 'incorrect'})
+    }
+    else if (['Backspace', 'Enter'].includes(event.code)) {
+        onLetterPress({value: event.code, state: 'incorrect'})
+    }
+    
+  }
   
   useEffect(() => {
-    const filledWordList: [Letter[]] = [...initialWords]
+    const filledWordList: Letter[][] = [...initialWords]
     for (let remainingAttempts = wordLength+1 - initialWords.length; remainingAttempts > 0; remainingAttempts--) {
       filledWordList.push(generateEmptyWord(wordLength))
     }
     setWordList(filledWordList)
-  })
+  }, [])
 
   return <>
     {wordList.map((letters, index) => {
@@ -24,6 +37,9 @@ export default function Board({wordLength, initialWords = [[]]}: {wordLength: nu
       </>
     })}
 
-    <Keyboard letterStates={[]}></Keyboard>
+    <Keyboard 
+      letterStates={letterHistory}
+      onKeyPress={onKeyPress}
+    ></Keyboard>
   </>
 }

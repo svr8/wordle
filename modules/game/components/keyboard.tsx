@@ -1,30 +1,18 @@
+import { useEffect } from "react";
 import { Letter } from "../lib/letter";
 import Letters from "./letters";
 
-export default function Keyboard({letterStates}: {letterStates: Letter[]}) {
-  const row1: Letter[] = []
-  const row1String = 'QWERTYUIOP'
-  for (let i = 0; i < row1String.length; i++) {
-    const existingLetter = letterStates.find((letter) => letter.value == row1String[i])
-    const existingLetterState = existingLetter ? existingLetter.state : 'incorrect'
-    row1.push({value: row1String[i], state: existingLetterState})
-  }
+export default function Keyboard({letterStates, onKeyPress}: {letterStates: Letter[], onKeyPress: (event: KeyboardEvent) => void}) {
+  const row1 = getLettersFromString('QWERTYUIOP', letterStates)
+  const row2 = getLettersFromString('ASDFGHJKL', letterStates)
+  const row3 = getLettersFromString('↩ZXCVBNM⌫', letterStates)
 
-  const row2: Letter[] = []
-  const row2String = 'ASDFGHJKL'.toLocaleUpperCase()
-  for (let i = 0; i < row2String.length; i++) {
-    const existingLetter = letterStates.find((letter) => letter.value == row1String[i])
-    const existingLetterState = existingLetter ? existingLetter.state : 'incorrect'
-    row2.push({value: row2String[i], state: existingLetterState})
-  }
-
-  const row3: Letter[] = []
-  const row3String = '↩ZXCVBNM⌫'.toLocaleUpperCase()
-  for (let i = 0; i < row3String.length; i++) {
-    const existingLetter = letterStates.find((letter) => letter.value == row1String[i])
-    const existingLetterState = existingLetter ? existingLetter.state : 'incorrect'
-    row3.push({value: row3String[i], state: existingLetterState})
-  }
+  useEffect(() => {
+    document.addEventListener('keydown', onKeyPress)
+    return () => {
+      document.removeEventListener('keydown', onKeyPress)
+    }
+  }, [])
 
   return <>
     <Letters word={row1}></Letters>
@@ -33,4 +21,16 @@ export default function Keyboard({letterStates}: {letterStates: Letter[]}) {
     <br/>
     <Letters word={row3}></Letters>
   </>
+}
+
+const getLettersFromString = (str: string, letterStates: Letter[]): Letter[] => {
+  const letterList: Letter[] = []
+  
+  for (let i = 0; i < str.length; i++) {
+    const existingLetter = letterStates.find((letter) => letter.value == str[i])
+    const letterState = existingLetter ? existingLetter.state : 'incorrect'
+    letterList.push({value: str[i], state: letterState})
+  }
+
+  return letterList
 }
