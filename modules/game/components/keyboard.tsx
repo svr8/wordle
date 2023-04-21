@@ -34,7 +34,6 @@ export default function Keyboard({letterStates}: {letterStates: Letter[]}) {
     setRow1(getLettersFromString('QWERTYUIOP', letterStates))
     setRow2(getLettersFromString('ASDFGHJKL', letterStates))
     setRow3(getLettersFromString('↩ZXCVBNM⌫', letterStates))
-
   }, [letterStates])
 
   return <>

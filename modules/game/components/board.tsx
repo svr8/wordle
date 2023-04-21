@@ -9,7 +9,6 @@ export default function Board({wordLength, initialWords = [[]], letterHistory = 
   const [wordList, setWordList] = useState<Letter[][]>(initialWords)
 
   useEffect(() => {
-    console.log('initialWords', initialWords.length)
     // populate empty letters as remaining letters in last word
     const lastWord = [...initialWords[initialWords.length-1]]
     lastWord.push(...generateEmptyLetters(lastWord.length, wordLength))

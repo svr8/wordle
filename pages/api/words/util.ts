@@ -2,7 +2,9 @@ const fs = require("fs")
 
 export const isWordInDictionary = (word: string) => {
   const wordList = getAllWordsWithLength(word.length)
-  return wordList.filter((wordInList: string) => wordInList.toUpperCase() === word.toUpperCase()).length > 0
+  return wordList
+    .filter((wordInList: string) => wordInList.toUpperCase() === word.toUpperCase())
+    .length > 0
 }
 
 export const getRandomWordWithLength = (length: number) => {

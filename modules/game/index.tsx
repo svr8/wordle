@@ -61,17 +61,20 @@ export default function Game() {
           if (currentWord.length != wordLength) {
             return
           }
+          console.log('#2')
 
           // check if word is valid
           if (!(await isValidWord(currentWord)).isValid) {
             return
           }
+          console.log('#3')
 
           // reveal current word status
           const revealLetters = compareAndGenerateRevealWord(currentWord, correctWord)
-          const newAttemptWordList = attemptWordList.slice(attemptCount-1, attemptCount)
+          const newAttemptWordList = [...attemptWordList]
           newAttemptWordList.pop()
           newAttemptWordList.push(revealLetters)
+          newAttemptWordList.push([])
           setAttemptWordList(newAttemptWordList)
 
           // update guessLetterHistory
@@ -91,7 +94,9 @@ export default function Game() {
             dispatch(stopGame())
             dispatch(showResults())
           }
-        } else if (pressedLetter.value == 'Backspace') {
+        } 
+        // handle backspace key
+        else if (pressedLetter.value == 'Backspace') {
           // remove last letter current word
           const newAttemptWord = attemptWordList[attemptCount-1]
           newAttemptWord.pop()
@@ -100,8 +105,10 @@ export default function Game() {
           const newAttemptWordList = attemptWordList.slice(0, attemptCount-1)
           newAttemptWordList.push(newAttemptWord)
           setAttemptWordList(newAttemptWordList)
-        } else {
-          // handle letter key
+        } 
+        
+        // handle letter key
+        else {
           const currentWord = getWordFromLetterList(attemptWordList[attemptCount-1])
 
           // check word length
@@ -111,7 +118,7 @@ export default function Game() {
 
           // add letter to current word
           const newAttemptWord = attemptWordList[attemptCount-1]
-          newAttemptWord.push({value: pressedLetter.value, state: 'incorrect'})
+          newAttemptWord.push({value: pressedLetter.value, state: 'default'})
 
           // update current attempt word
           const newAttemptWordList = attemptWordList.slice(0, attemptCount-1)
@@ -164,28 +171,30 @@ const compareAndGenerateRevealWord = (guessedWord: string, correctWord: string):
 
   const revealLetters: Letter[] = []
   const guessedWordAlphabets: any = {}
-  for (let i = 97; i < 123; i++) {
+  for (let i = 65; i < 91; i++) {
     const letter = String.fromCharCode(i)
     guessedWordAlphabets[letter] = 0
   }
   const correctWordAlphabets = getAlphabetFrequency(correctWord)
 
   for (let i = 0; i < correctWord.length; i++) {
-    // correct letter
-    if(guessedWord[i] == correctWord[i]) {
+    console.log('#1', guessedWord[i], guessedWordAlphabets[guessedWord[i]], correctWord[i], correctWordAlphabets[guessedWord[i]])
+    // correct letter (repeat letter check)
+    if(guessedWord[i] == correctWord[i] && guessedWordAlphabets[guessedWord[i]] < correctWordAlphabets[guessedWord[i]]) {
       revealLetters.push({value: guessedWord[i], state: 'correct'})
     } 
     // incorrect letter
-    else if (!correctWord.includes(guessedWord[i])) {
+    else if (correctWordAlphabets[guessedWord[i]] == 0) {
       revealLetters.push({value: guessedWord[i], state: 'incorrect'})
     } 
     // partially correct letter (repeat letter check)
     else if (guessedWordAlphabets[guessedWord[i]] < correctWordAlphabets[guessedWord[i]]) {
       revealLetters.push({value: guessedWord[i], state: 'partially-correct'})
-      guessedWordAlphabets[guessedWord[i]]++
     } else {
       revealLetters.push({value: guessedWord[i], state: 'incorrect'})
     }
+    
+    guessedWordAlphabets[guessedWord[i]]++
   }
   return revealLetters
 }
@@ -226,13 +235,13 @@ const compareAndGetRevealedLetters = (revealedLetters: Letter[], letterHistory: 
 
 const getAlphabetFrequency = (word: string) => {
   const res: any = {}
-  for (let i = 97; i < 123; i++) {
+  for (let i = 65; i < 91; i++) {
     const letter = String.fromCharCode(i)
     res[letter] = 0
   }
 
   for (let i = 0; i < word.length; i++) {
-    const letter = word[i].toLowerCase()
+    const letter = word[i].toUpperCase()
     res[letter]++
   }
 
