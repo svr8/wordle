@@ -1,9 +1,35 @@
-import Letters from "@/components/game/letters"
-import PopupBox from "@/components/popupbox"
+import Letters from "@/modules/game/components/letters"
+import PopupBox from "@/modules/game/components/popupbox"
+import { Letter } from "../lib/letter"
 
 export default function Help() {
+  const example1: Letter[] = [
+    {value: 'W', state: 'correct'},
+    {value: 'E', state: 'default'},
+    {value: 'A', state: 'default'},
+    {value: 'R', state: 'default'},
+    {value: 'L', state: 'default'},
+    {value: 'Y', state: 'default'},
+  ]
+
+  const example2: Letter[] = [
+    {value: 'P', state: 'default'},
+    {value: 'I', state: 'partially-correct'},
+    {value: 'L', state: 'default'},
+    {value: 'L', state: 'default'},
+    {value: 'S', state: 'default'},
+  ]
+
+  const example3: Letter[] = [
+    {value: 'V', state: 'correct'},
+    {value: 'A', state: 'default'},
+    {value: 'G', state: 'default'},
+    {value: 'U', state: 'incorrect'},
+    {value: 'E', state: 'default'},
+  ]
+
   return <>
-      <PopupBox title="How To Play" onClose={() => {}}>
+      <PopupBox title="How To Play">
       <div>
         <br/>
         <div>Guess the Wordle in N+1 tries.</div>
@@ -15,17 +41,17 @@ export default function Help() {
         <br/>
         <div className="font-semibold">Examples</div>
         <br/>
-        <Letters wordLength={6} initialState="C*****" initialWord='WEARLY'></Letters>
+        <Letters word={example1}></Letters>
         <br/>
         <div><span className="font-semibold">W</span> is in the word and in the correct spot.</div>
 
         <br/>
-        <Letters wordLength={5} initialState="*P***" initialWord='PILLS'></Letters>
+        <Letters word={example2}></Letters>
         <br/>
         <div><span className="font-semibold">I</span> is in the word but in the wrong spot.</div>
 
         <br/>
-        <Letters wordLength={5} initialState="***W*" initialWord='VAGUE'></Letters>
+        <Letters word={example3}></Letters>
         <br/>
         <div><span className="font-semibold">U</span> is not in the word in any spot.</div>
       </div>
