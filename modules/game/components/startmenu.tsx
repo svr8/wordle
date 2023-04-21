@@ -75,7 +75,6 @@ export default function StartMenu() {
             type="number" 
             min={3}
             max={MAX_WORD_LENGTH}
-            defaultValue={inputWordLength}
             value={inputWordLength}
             onChange={(e) => {handleWordLengthChange(e.target.value)}}
             onKeyDown={(e: any) => { handleWordLengthChange(e.target.value)}}

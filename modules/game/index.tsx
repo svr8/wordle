@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 import StartMenu from "./components/startmenu"
 import { setResults, showResults, stopGame } from "@/store/game/slice"
 import { getRandomWord, isValidWord } from "@/lib/words"
+import { POPUP_ANIMATION_DELAY_MILLISECONDS } from "./lib/config"
 
 export default function Game() {
   const dispatch = useDispatch()
@@ -17,11 +18,12 @@ export default function Game() {
   const previousPlayState = useSelector((state: any) => state.game.previousPlayState)
   const wordLength = useSelector((state: any) => state.game.wordLength)
   const pressedLetter = useSelector((state: any) => state.game.pressedLetter)
+  const results = useSelector((state: any) => state.game.results)
   const [attemptWordList, setAttemptWordList] = useState<Letter[][]>([[]])
   const [attemptCount, setAttemptCount] = useState(1)
   const [guessLetterHistory, setGuessLetterHistory] = useState<Letter[]>([])
   const [correctWord, setCorrectWord] = useState<string>('')
-  const results = useSelector((state: any) => state.game.results)
+  const [currentPopupState, setCurrentPopupState] = useState<string>('startmenu')
 
   useEffect(() => {
     // handle game start
@@ -136,14 +138,22 @@ export default function Game() {
     
   }, [pressedLetter])
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCurrentPopupState(popupState)
+    }, POPUP_ANIMATION_DELAY_MILLISECONDS)
+
+    return () => clearTimeout(timer)
+  }, [popupState])
+
   return <>
     <Header></Header>
-    {popupState == 'startmenu' && <StartMenu></StartMenu>}
-    {popupState == 'help' && <Help></Help>}
-    {popupState == 'results' && <Results></Results>}
+    {currentPopupState == 'startmenu' && <StartMenu></StartMenu>}
+    {currentPopupState == 'help' && <Help></Help>}
+    {currentPopupState == 'results' && <Results></Results>}
     <br/>
     <br/>
-    {popupState == 'hidden' && <>
+    {currentPopupState == 'hidden' && <>
       <Board 
         wordLength={wordLength} 
         initialWords={attemptWordList}
