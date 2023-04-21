@@ -1,3 +1,4 @@
+import path from 'path'
 const fs = require("fs")
 
 export const isWordInDictionary = (word: string) => {
@@ -18,7 +19,8 @@ const randomNumberInRange = (min: number, max: number) => {
 }
 
 const getAllWordsWithLength = (length: number) => {
-  const content = fs.readFileSync("public/data/wordlist.txt").toString()
+  const filePath = path.join(process.cwd(), 'public/data/wordlist.txt')
+  const content = fs.readFileSync(filePath).toString()
   const wordList = content.split('\n')
   return wordList.filter((word: string) => word.length === length)
 }
