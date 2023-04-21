@@ -13,6 +13,8 @@ export const gameSlice = createSlice({
     closePopup: state => {
       state.popupState = 'hidden'
       state.playState = state.previousPlayState
+      state.previousPlayState = 'paused'
+      
       if (state.playState == 'stopped') {
         state.popupState = 'startmenu'
       }

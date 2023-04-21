@@ -7,49 +7,116 @@ import Board from "./components/board"
 import { Letter } from "./lib/letter"
 import { useEffect, useState } from "react"
 import StartMenu from "./components/startmenu"
-import { stopGame } from "@/store/game/slice"
+import { showResults, stopGame } from "@/store/game/slice"
+import { getRandomWord, isValidWord } from "@/lib/words"
 
 export default function Game() {
   const dispatch = useDispatch()
 
   const popupState = useSelector((state: any) => state.game.popupState)
   const playState = useSelector((state: any) => state.game.playState)
+  const previousPlayState = useSelector((state: any) => state.game.previousPlayState)
   const wordLength = useSelector((state: any) => state.game.wordLength)
   const pressedLetter = useSelector((state: any) => state.game.pressedLetter)
-  const [attemptWordList, setAttemptWordList] = useState<Letter[][]>([])
+  const [attemptWordList, setAttemptWordList] = useState<Letter[][]>([[]])
   const [attemptCount, setAttemptCount] = useState(1)
   const [guessLetterHistory, setGuessLetterHistory] = useState<Letter[]>([])
+  const [correctWord, setCorrectWord] = useState<string>('')
+
 
   useEffect(() => {
-    // ignore keypress playState running
-    if (['stopped', 'paused', 'finished'].includes(playState)) {
-      return
+    // handle game start
+    const onGameStart = async () => {
+      if (playState == 'running' && previousPlayState != 'paused') {
+        setAttemptWordList([[]])
+        setAttemptCount(1)
+        setGuessLetterHistory([])
+  
+        const randomWord = await getRandomWord(wordLength)
+        setCorrectWord(randomWord)
+      } 
     }
 
-    // check for 'running' playState
-    if ('running' == playState) {
-      // TODO handle game logic
-      console.log('letter pressed', pressedLetter)
+    onGameStart()
+  }, [playState])
 
-      if(pressedLetter.value == 'Enter') {
-        // TODO handle enter key
-        // check word length
-        // check if word is valid
+  useEffect(() => {
 
-        // if all checks passed
+    const onLetterPress = async () => {
+      // ignore keypress playState running
+      if (['stopped', 'paused', 'finished'].includes(playState)) {
+        return
+      }
+
+      // check for 'running' playState
+      if ('running' == playState) {
+        console.log('DEBUG #1', pressedLetter)
+        // handle game logic
+
+        // handle enter key
+        if(pressedLetter.value == 'Enter') {
+          const currentWord = getWordFromLetterList(attemptWordList[attemptCount-1])
+
+          // check word length
+          if (currentWord.length != wordLength) {
+            return
+          }
+
+          // check if word is valid
+          if (!(await isValidWord(currentWord)).isValid) {
+            return
+          }
+
           // reveal current word status
+          const revealLetters = compareAndGenerateRevealWord(currentWord, correctWord)
+          const newAttemptWordList = attemptWordList.slice(attemptCount-1, attemptCount)
+          newAttemptWordList.push(revealLetters)
+          setAttemptWordList(newAttemptWordList)
+
           // update guessLetterHistory
-          // add word to attemptWordList
+          setGuessLetterHistory(compareAndGetRevealedLetters(revealLetters, guessLetterHistory))
+
           // increase attemptCount
-      } else if (pressedLetter.value == 'Backspace') {
-        // TODO handle backspace key
-        // remove last letter current word
-      } else {
-        // TODO handle letter key
-        // check word length
-        // add letter to current word
+          setAttemptCount(attemptCount+1)
+
+          // end game if attemptCount reaches wordLimit+1
+          if (attemptCount == wordLength+1) {
+            dispatch(stopGame())
+            dispatch(showResults())
+          }
+        } else if (pressedLetter.value == 'Backspace') {
+          // remove last letter current word
+          const newAttemptWord = attemptWordList[attemptCount-1]
+          newAttemptWord.pop()
+
+          // update current attempt word
+          const newAttemptWordList = attemptWordList.slice(0, attemptCount-1)
+          newAttemptWordList.push(newAttemptWord)
+          setAttemptWordList(newAttemptWordList)
+        } else {
+          // handle letter key
+          const currentWord = getWordFromLetterList(attemptWordList[attemptCount-1])
+
+          // check word length
+          if (currentWord.length >= wordLength) {
+            return
+          }
+
+          // add letter to current word
+          const newAttemptWord = attemptWordList[attemptCount-1]
+          newAttemptWord.push({value: pressedLetter.value, state: 'incorrect'})
+
+          // update current attempt word
+          const newAttemptWordList = attemptWordList.slice(0, attemptCount-1)
+          newAttemptWordList.push(newAttemptWord)
+          setAttemptWordList(newAttemptWordList)
+          console.log('DEBUG #2', newAttemptWordList)
+        }
       }
     }
+
+    onLetterPress()
+    
   }, [pressedLetter])
 
   return <>
@@ -79,4 +146,86 @@ export default function Game() {
     </>}
     
   </>
+}
+
+const getWordFromLetterList = (letterList: Letter[]) => {
+  return (letterList.map(letter => letter.value).join('')).toLowerCase()
+}
+
+const compareAndGenerateRevealWord = (guessedWord: string, correctWord: string): Letter[] => {
+  const revealLetters: Letter[] = []
+  const guessedWordAlphabets: any = {}
+  for (let i = 97; i < 123; i++) {
+    const letter = String.fromCharCode(i)
+    guessedWordAlphabets[letter] = 0
+  }
+  const correctWordAlphabets = getAlphabetFrequency(correctWord)
+
+  for (let i = 0; i < correctWord.length; i++) {
+    // correct letter
+    if(guessedWord[i] == correctWord[i]) {
+      revealLetters.push({value: guessedWord[i], state: 'correct'})
+    } 
+    // incorrect letter
+    else if (!correctWord.includes(guessedWord[i])) {
+      revealLetters.push({value: guessedWord[i], state: 'incorrect'})
+    } 
+    // partially correct letter (repeat letter check)
+    else if (guessedWordAlphabets[guessedWord[i]] < correctWordAlphabets[guessedWord[i]]) {
+      revealLetters.push({value: guessedWord[i], state: 'partially-correct'})
+      guessedWordAlphabets[guessedWord[i]]++
+    } else {
+      revealLetters.push({value: guessedWord[i], state: 'incorrect'})
+    }
+  }
+  return revealLetters
+}
+
+const compareAndGetRevealedLetters = (revealedLetters: Letter[], letterHistory: Letter[]) => {
+  const res: Letter[] = []
+
+  revealedLetters.map((revealedLetter) => {
+    const existingLetter = letterHistory.find(letter => letter.value.toUpperCase() == revealedLetter.value.toUpperCase())
+    // if letter was already guessed, check and update
+    if (existingLetter) {
+      // if current letter is partially correct and existing letter is incorrect,
+      // update to partially correct
+      if (revealedLetter.state == 'partially-correct' && existingLetter.state == 'incorrect') {
+        res.push({value: revealedLetter.value.toUpperCase(), state: 'partially-correct'})
+      } 
+      // else if current letter is correct, update to correct
+      else if (revealedLetter.state == 'correct') {
+        res.push({value: revealedLetter.value.toUpperCase(), state: 'correct'})
+      }
+    }
+    // else add new letter
+    else {
+      res.push(revealedLetter)
+    }
+  })
+
+  // add all undetected letters
+  letterHistory.map((letter) => {
+    const existingLetter = res.find(revealedLetter => revealedLetter.value.toUpperCase() == letter.value.toUpperCase())
+    if (!existingLetter) {
+      res.push(letter)
+    }
+  })
+
+  return res
+}
+
+const getAlphabetFrequency = (word: string) => {
+  const res: any = {}
+  for (let i = 97; i < 123; i++) {
+    const letter = String.fromCharCode(i)
+    res[letter] = 0
+  }
+
+  for (let i = 0; i < word.length; i++) {
+    const letter = word[i].toLowerCase()
+    res[letter]++
+  }
+
+  return res
 }

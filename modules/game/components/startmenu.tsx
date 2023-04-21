@@ -17,7 +17,6 @@ export default function StartMenu() {
   ]
 
   const handleWordLengthChange = (e: any) => {
-    console.log(e)
     dispatch(setWordLength(parseInt(e.target.value)))
   }
 
