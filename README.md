@@ -10,7 +10,7 @@
     <p align="center">
       The famous wordle game with a twist!
       <br />
-      <a href="https://wordle-svr8.vercel.app/"><strong> Live Demo »</strong></a> | <a href="https://www.tensorflow.org/tensorboard"><strong> Design Docs »</strong></a>
+      <a href="https://wordle-svr8.vercel.app/"><strong> Live Demo »</strong></a> | <a href="https://github.com/svr8/wordle/tree/main/docs#readme"><strong> Design Docs »</strong></a>
     </p>
   </div>
 
@@ -45,6 +45,8 @@ This document aims to present the planning that went behind building this app. T
 
 **Tech Stack**: React, NextJS
 **Animation Library**: react-spring
+
+The entire documentation is available [here](https://github.com/svr8/wordle/tree/main/docs#readme).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
