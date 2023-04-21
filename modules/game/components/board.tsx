@@ -16,8 +16,7 @@ export default function Board({wordLength, initialWords = [[]], letterHistory = 
     const filledWordList = [...initialWords.slice(0, initialWords.length-1), lastWord]
 
     // populate empty words as remaining words
-    const extraFlag = filledWordList[filledWordList.length-1].length == 0 ? 1 : 0
-    for (let remainingAttempts = wordLength+extraFlag - filledWordList.length; remainingAttempts > 0; remainingAttempts--) {
+    for (let remainingAttempts = wordLength+1 - filledWordList.length; remainingAttempts > 0; remainingAttempts--) {
       filledWordList.push(generateEmptyWord(wordLength))
     }
 
