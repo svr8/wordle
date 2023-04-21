@@ -32,21 +32,23 @@ There are some miscellaneous components that are specialized for this project. T
 
 # Key Problems Handled
 
-## Making it re-usable: Separating the game logic from components
+## Where to place game logic?
 
-The idea is to keep the sub-components as independent as possible so they can be re-used in the future. This is why no logical decision was implemented inside the components placed in `modules` folder. The modules are treated as pre-packaged solutions that can be interfaced with easily, and configured using props.
+There were 2 options: directly implement logic and update component state in the component where the event was triggered. Another was to pass all information up to parent components(various levels) and keep all logic in one place.
+The second one looks good but the the back-and-forth communication could make the codebase messy. This issue is discussed later in this document.
 
-.
+The idea is to keep the sub-components as independent as possible so they can be re- used in the future. This is why no logical decision was implemented inside the components placed in   folder. The modules are treated as pre-packaged solutions that can be interfaced with easily, and configured using props.
 
 ![core-game-logic.png](images/core-game-logic.png)
 
 This is why component events are listened to and handled in `/components/game.tsx` file. This file contains the core logic and implementation of all possible events occurring in the game.
 
-## Making it simple: Designing one-way communication
+## How to simplify back-and-forth communication between various components, including multi-level nested components?
 
 ![redux.png](images/redux.png)
 
-`Redux` was used to manage the complexity of event passing between various levels of nested components. The project involved up to 3 levels of nesting between components and back-and-forth communication. This was solved by publishing data to a common store and each component implementing independent event handlers.
+This core issue is addressed in Robotics greatly. The architecture or event-driven designs are widely used owing to the large amount of miscellaneous events happening all the time. `Redux` is a great solution to these problems and was used as a single channel to communicate between various components.
+was used to manage the complexity. 
 
 Efforts were made to keep all props passed to components to be one-way and remove all backward event handling and data propagation.
 
@@ -54,7 +56,7 @@ Efforts were made to keep all props passed to components to be one-way and remov
 
 ![configurable-css.png](images/configurable-css.png)
 
-It was not completely possible to use Tailwind due to specialized requirements that make it look and feel like the original game. However, all style configurations are compiled into a single `/lib/game/config.ts` file that would make it easy to manage various constants of the game. All effort was done to use Tailwind and keep the components highly configurable.
+It was not to use Tailwind while completely eliminating custom CSS. This is due to specialized requirements that make it look and feel like the original game. However, all style configurations are compiled into a single `/lib/game/config.ts` file that would make it easy to manage various constants of the game. All effort was done to use Tailwind and keep the components highly configurable.
 
 Similarly, other `constants` files have been created related to various sections of the app, like, APIs. These steps make it easy to modify the app on the go.
 
