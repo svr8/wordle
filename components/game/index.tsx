@@ -25,8 +25,8 @@ export default function Game() {
   const [correctWord, setCorrectWord] = useState<string>('')
   const [currentPopupState, setCurrentPopupState] = useState<string>('startmenu')
 
+  // handle game start
   useEffect(() => {
-    // handle game start
     const onGameStart = async () => {
       if (playState == 'running' && previousPlayState != 'paused') {
         setAttemptWordList([[]])
@@ -41,6 +41,7 @@ export default function Game() {
     onGameStart()
   }, [playState])
 
+  // handle keypresses
   useEffect(() => {
 
     const onLetterPress = async () => {
@@ -138,6 +139,7 @@ export default function Game() {
     
   }, [pressedLetter])
 
+  // handle popups
   useEffect(() => {
     const timer = setTimeout(() => {
       setCurrentPopupState(popupState)
