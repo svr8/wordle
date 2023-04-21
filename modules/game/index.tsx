@@ -22,7 +22,7 @@ export default function Game() {
   const [attemptCount, setAttemptCount] = useState(1)
   const [guessLetterHistory, setGuessLetterHistory] = useState<Letter[]>([])
   const [correctWord, setCorrectWord] = useState<string>('')
-
+  const results = useSelector((state: any) => state.game.results)
 
   useEffect(() => {
     // handle game start
@@ -61,13 +61,11 @@ export default function Game() {
           if (currentWord.length != wordLength) {
             return
           }
-          console.log('#2')
 
           // check if word is valid
           if (!(await isValidWord(currentWord)).isValid) {
             return
           }
-          console.log('#3')
 
           // reveal current word status
           const revealLetters = compareAndGenerateRevealWord(currentWord, correctWord)
@@ -106,6 +104,11 @@ export default function Game() {
           newAttemptWordList.push(newAttemptWord)
           setAttemptWordList(newAttemptWordList)
         } 
+
+        // ignore space key
+        else if (pressedLetter.value == ' ') {
+          return
+        }
         
         // handle letter key
         else {
@@ -178,7 +181,6 @@ const compareAndGenerateRevealWord = (guessedWord: string, correctWord: string):
   const correctWordAlphabets = getAlphabetFrequency(correctWord)
 
   for (let i = 0; i < correctWord.length; i++) {
-    console.log('#1', guessedWord[i], guessedWordAlphabets[guessedWord[i]], correctWord[i], correctWordAlphabets[guessedWord[i]])
     // correct letter (repeat letter check)
     if(guessedWord[i] == correctWord[i] && guessedWordAlphabets[guessedWord[i]] < correctWordAlphabets[guessedWord[i]]) {
       revealLetters.push({value: guessedWord[i], state: 'correct'})

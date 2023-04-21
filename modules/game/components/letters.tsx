@@ -7,7 +7,13 @@ export default function Letters({word}: {word: Letter[]}) {
   const dispatch = useDispatch()
 
   const onLetterClick = (letter: Letter) => {
-    dispatch(pressLetter(letter))
+    if(letter.value == '↩') {
+      dispatch(pressLetter({value: 'Enter', state: 'default'}))
+    } else if (letter.value == '⌫') {
+      dispatch(pressLetter({value: 'Backspace', state: 'default'}))
+    } else {
+      dispatch(pressLetter(letter))
+    }
   }
 
   return (

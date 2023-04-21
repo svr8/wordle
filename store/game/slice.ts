@@ -8,12 +8,18 @@ export const gameSlice = createSlice({
     popupState: 'startmenu',
     pressedLetter: {value: '', state: ''},
     wordLength: 5,
+    results: {
+      totalPlayed: 0,
+      totalWon: 0,
+      winStreak: 0,
+      maxStreak: 0,
+      lastGameWon: null,
+    }
   },
   reducers: {
     closePopup: state => {
       state.popupState = 'hidden'
       state.playState = state.previousPlayState
-      state.previousPlayState = 'paused'
       
       if (state.playState == 'stopped') {
         state.popupState = 'startmenu'
@@ -37,6 +43,11 @@ export const gameSlice = createSlice({
       state.previousPlayState = state.playState
       state.playState = 'paused'
     },
+    showStartMenu: state => {
+      state.popupState = 'startmenu'
+      state.playState = 'stopped'
+      state.previousPlayState = 'stopped'
+    },
     setWordLength: (state, action) => {
       state.wordLength = action.payload
     },
@@ -52,6 +63,6 @@ export const gameSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { pressLetter, showHelp, showResults, showSettings, closePopup, setWordLength, startGame, stopGame } = gameSlice.actions
+export const { pressLetter, showHelp, showResults, showSettings, closePopup, setWordLength, startGame, stopGame, showStartMenu } = gameSlice.actions
 
 export default gameSlice.reducer

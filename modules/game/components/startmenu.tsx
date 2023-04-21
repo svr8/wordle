@@ -3,9 +3,13 @@ import PopupBox from "@/modules/game/components/popupbox"
 import { Letter } from "../lib/letter"
 import { useDispatch } from "react-redux"
 import { setWordLength, startGame } from "@/store/game/slice"
+import { MAX_WORD_LENGTH } from "@/lib/words/const"
+import { useState } from "react"
 
 export default function StartMenu() {
   const dispatch = useDispatch()
+
+  const [inputWordLength, setInputWordLength] = useState(5)
 
   const example1: Letter[] = [
     {value: 'W', state: 'correct'},
@@ -16,8 +20,22 @@ export default function StartMenu() {
     {value: 'Y', state: 'default'},
   ]
 
-  const handleWordLengthChange = (e: any) => {
-    dispatch(setWordLength(parseInt(e.target.value)))
+  const handleWordLengthChange = (val: string) => {
+    const wordLength = parseInt(val)
+    if (wordLength > MAX_WORD_LENGTH) {
+      return
+    }
+
+    setInputWordLength(wordLength)
+  }
+
+  const onStartClick = () => {
+    if (inputWordLength > MAX_WORD_LENGTH) {
+      return
+    }
+
+    dispatch(setWordLength(inputWordLength))
+    dispatch(startGame())
   }
 
   return <>
@@ -49,8 +67,10 @@ export default function StartMenu() {
             className="border-b-solid border-b-2 border-black outline-none p-3 text-center"
             type="number" 
             min={3}
+            max={MAX_WORD_LENGTH}
             defaultValue={5}
-            onChange={handleWordLengthChange}
+            onChange={(e) => {handleWordLengthChange(e.target.value)}}
+            onKeyDown={(e: any) => { handleWordLengthChange(e.target.value)}}
           ></input>
         </div>
         <br/>
@@ -58,7 +78,7 @@ export default function StartMenu() {
 
           <button 
             className="bg-green-800 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-sm"
-            onClick={() => dispatch(startGame())}
+            onClick={() => onStartClick()}
           >
             Start
           </button>
