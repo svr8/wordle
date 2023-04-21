@@ -3,6 +3,7 @@ import Letters from "./letters";
 import { Letter } from "../lib/letter";
 import { generateEmptyLetters, generateEmptyWord } from "../lib/util";
 import Keyboard from "./keyboard";
+import { BOARD_LETTER_TAILWIND_CLASSNAME } from "../lib/config";
 
 export default function Board({wordLength, initialWords = [[]], letterHistory = []}: {wordLength: number, initialWords: Letter[][], letterHistory: Letter[]}) {
   
@@ -27,10 +28,13 @@ export default function Board({wordLength, initialWords = [[]], letterHistory = 
   return <>
     {wordList.map((letters, index) => {
       return <>
-        <Letters key={index} word={letters}></Letters>
+        <Letters key={index} word={letters} tailwindClassname={BOARD_LETTER_TAILWIND_CLASSNAME}></Letters>
         <br/>
       </>
     })}
+
+    <br/>
+    <br/>
 
     <Keyboard 
       letterStates={letterHistory}

@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux"
 import { setWordLength, startGame } from "@/store/game/slice"
 import { MAX_WORD_LENGTH } from "@/lib/words/const"
 import { useState } from "react"
+import { EXAMPLE_LETTER_TAILWIND_CLASSNAME } from "../lib/config"
 
 export default function StartMenu() {
   const dispatch = useDispatch()
@@ -50,9 +51,9 @@ export default function StartMenu() {
         </div>
         
         <br/>
-        <div className="font-semibold">Examples</div>
+        <div className="font-semibold">Example</div>
         <br/>
-        <Letters word={example1}></Letters>
+        <Letters word={example1} tailwindClassname={EXAMPLE_LETTER_TAILWIND_CLASSNAME}></Letters>
         <br/>
         <div><span className="font-semibold">W</span> is in the word and in the correct spot.</div>
         <div><span className="font-semibold">A</span> is in the word but in the wrong spot.</div>

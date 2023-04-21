@@ -4,6 +4,7 @@ import Letters from "./letters";
 import { isKeyboardEventLetter } from "../lib/util";
 import { pressLetter } from "@/store/game/slice"
 import { useDispatch } from "react-redux";
+import { KEYBOARD_LETTER_TAILWIND_CLASSNAME } from "../lib/config";
 
 export default function Keyboard({letterStates}: {letterStates: Letter[]}) {
   const dispatch = useDispatch()
@@ -37,11 +38,11 @@ export default function Keyboard({letterStates}: {letterStates: Letter[]}) {
   }, [letterStates])
 
   return <>
-    <Letters word={row1}></Letters>
+    <Letters word={row1} tailwindClassname={KEYBOARD_LETTER_TAILWIND_CLASSNAME}></Letters>
     <br/>
-    <Letters word={row2}></Letters>
+    <Letters word={row2} tailwindClassname={KEYBOARD_LETTER_TAILWIND_CLASSNAME}></Letters>
     <br/>
-    <Letters word={row3}></Letters>
+    <Letters word={row3} tailwindClassname={KEYBOARD_LETTER_TAILWIND_CLASSNAME}></Letters>
   </>
 }
 
@@ -50,7 +51,7 @@ const getLettersFromString = (str: string, letterStates: Letter[]): Letter[] => 
   
   for (let i = 0; i < str.length; i++) {
     const existingLetter = letterStates.find((letter) => letter.value == str[i])
-    const letterState = existingLetter ? existingLetter.state : 'incorrect'
+    const letterState = existingLetter ? existingLetter.state : 'keyboard-default'
     letterList.push({value: str[i], state: letterState})
   }
 

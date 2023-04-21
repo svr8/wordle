@@ -6,22 +6,25 @@ export default function Results() {
   const dispatch = useDispatch()
 
   const results = useSelector((state: any) => state.game.results)
-  const playState = useSelector((state: any) => state.game.playState)
   const previousPlayState = useSelector((state: any) => state.game.previousPlayState)
 
-  console.log('results', results)
-  console.log('playState', playState)
   return <>
       <PopupBox title="Results">
         <div>
           <br/>
           {results.lastGameWon != null && previousPlayState == 'stopped' && 
+          <>
           <div className="flex flex-col items-center justify-center font-normal text-2xl">
-          WINNER!
-        </div>
-        }
-          
-
+            {results.lastGameWon ? 'You won!' : 'You lost!'}
+          </div>
+          <br/>
+          <div className="flex flex-col items-center justify-center font-normal text-md">
+            Last Game Word: {results.lastGameWord}
+          </div>
+          <br/>
+          </>
+          }
+            
           <br/>
 
           <div className="grid grid-cols-4 grid-flow-row gap-4 justify-evenly">

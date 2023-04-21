@@ -32,7 +32,6 @@ export default function Game() {
         setGuessLetterHistory([])
   
         const randomWord = (await getRandomWord(wordLength)).word
-        console.log('correct word', randomWord)
         setCorrectWord(randomWord)
       } 
     }
@@ -89,6 +88,7 @@ export default function Game() {
           }
           if (gameResult != 'none') { // game has ended
             const newResults = calculateResults(gameResult == 'win', results)
+            newResults.lastGameWord = correctWord
             dispatch(setResults(newResults))
             dispatch(stopGame())
             dispatch(showResults())
@@ -141,7 +141,6 @@ export default function Game() {
     {popupState == 'startmenu' && <StartMenu></StartMenu>}
     {popupState == 'help' && <Help></Help>}
     {popupState == 'results' && <Results></Results>}
-    <br/>
     <br/>
     <br/>
     {popupState == 'hidden' && <>

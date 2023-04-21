@@ -14,6 +14,7 @@ export const gameSlice = createSlice({
       winStreak: 0,
       maxStreak: 0,
       lastGameWon: null,
+      lastGameWord: null,
     }
   },
   reducers: {

@@ -1,6 +1,7 @@
 import Letters from "@/modules/game/components/letters"
 import PopupBox from "@/modules/game/components/popupbox"
 import { Letter } from "../lib/letter"
+import { EXAMPLE_LETTER_TAILWIND_CLASSNAME } from "../lib/config"
 
 export default function Help() {
   const example1: Letter[] = [
@@ -41,17 +42,17 @@ export default function Help() {
         <br/>
         <div className="font-semibold">Examples</div>
         <br/>
-        <Letters word={example1}></Letters>
+        <Letters word={example1} tailwindClassname={EXAMPLE_LETTER_TAILWIND_CLASSNAME}></Letters>
         <br/>
         <div><span className="font-semibold">W</span> is in the word and in the correct spot.</div>
 
         <br/>
-        <Letters word={example2}></Letters>
+        <Letters word={example2} tailwindClassname={EXAMPLE_LETTER_TAILWIND_CLASSNAME}></Letters>
         <br/>
         <div><span className="font-semibold">I</span> is in the word but in the wrong spot.</div>
 
         <br/>
-        <Letters word={example3}></Letters>
+        <Letters word={example3} tailwindClassname={EXAMPLE_LETTER_TAILWIND_CLASSNAME}></Letters>
         <br/>
         <div><span className="font-semibold">U</span> is not in the word in any spot.</div>
       </div>
