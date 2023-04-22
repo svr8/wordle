@@ -32,8 +32,7 @@ export default function Board({wordLength, initialWords = [[]], letterHistory = 
       </>
     })}
 
-    <br/>
-    <br/>
+    <br className="hidden md:block"/>
 
     <Keyboard 
       letterStates={letterHistory}
