@@ -1,5 +1,5 @@
 import { Letter } from "../../../lib/game/letter"
-import { LETTER_CORRECT_STYLE, LETTER_DEFAULT_STYLE, LETTER_INCORRECT_STYLE, LETTER_KEYBOARD_DEFAULT_STYLE, LETTER_PARTIALLY_CORRECT_STYLE } from "../../../lib/game/config"
+import { BACKSPACE_KEY_CHAR, ENTER_KEY_CHAR, LETTER_CORRECT_STYLE, LETTER_DEFAULT_STYLE, LETTER_INCORRECT_STYLE, LETTER_KEYBOARD_DEFAULT_STYLE, LETTER_PARTIALLY_CORRECT_STYLE } from "../../../lib/game/config"
 import { useDispatch } from "react-redux"
 import { pressLetter } from "@/store/game/slice"
 
@@ -7,9 +7,9 @@ export default function Letters({word, tailwindClassname}: {word: Letter[], tail
   const dispatch = useDispatch()
 
   const onLetterClick = (letter: Letter) => {
-    if(letter.value == '↩') {
+    if(letter.value == ENTER_KEY_CHAR) {
       dispatch(pressLetter({value: 'Enter', state: 'default'}))
-    } else if (letter.value == '⌫') {
+    } else if (letter.value == BACKSPACE_KEY_CHAR) {
       dispatch(pressLetter({value: 'Backspace', state: 'default'}))
     } else {
       dispatch(pressLetter(letter))

@@ -4,13 +4,13 @@ import Letters from "./letters";
 import { isKeyboardEventLetter } from "../../../lib/game/util";
 import { pressLetter } from "@/store/game/slice"
 import { useDispatch } from "react-redux";
-import { KEYBOARD_LETTER_TAILWIND_CLASSNAME } from "../../../lib/game/config";
+import { BACKSPACE_KEY_CHAR, ENTER_KEY_CHAR, KEYBOARD_LETTER_TAILWIND_CLASSNAME } from "../../../lib/game/config";
 
 export default function Keyboard({letterStates}: {letterStates: Letter[]}) {
   const dispatch = useDispatch()
   const [row1, setRow1] = useState<Letter[]>(getLettersFromString('QWERTYUIOP', letterStates))
   const [row2, setRow2] = useState<Letter[]>(getLettersFromString('ASDFGHJKL', letterStates))
-  const [row3, setRow3] = useState<Letter[]>(getLettersFromString('↩ZXCVBNM⌫', letterStates))
+  const [row3, setRow3] = useState<Letter[]>(getLettersFromString(`${ENTER_KEY_CHAR}ZXCVBNM${BACKSPACE_KEY_CHAR}`, letterStates))
 
   const onKeyPress = (event: KeyboardEvent) => {
     const letterMatch = letterStates.find((letter) => letter.value.toUpperCase() == event.key.toUpperCase())
@@ -34,7 +34,7 @@ export default function Keyboard({letterStates}: {letterStates: Letter[]}) {
   useEffect(() => {
     setRow1(getLettersFromString('QWERTYUIOP', letterStates))
     setRow2(getLettersFromString('ASDFGHJKL', letterStates))
-    setRow3(getLettersFromString('↩ZXCVBNM⌫', letterStates))
+    setRow3(getLettersFromString(`${ENTER_KEY_CHAR}ZXCVBNM${BACKSPACE_KEY_CHAR}`, letterStates))
   }, [letterStates])
 
   return <>

@@ -29,3 +29,6 @@ export const POPUP_ANIMATION_DELAY_MILLISECONDS = 400
 export const BOARD_LETTER_TAILWIND_CLASSNAME = 'w-12 h-12 mx-1 text-xl py-2 md:px-3 md:w-16 lg:w-15 lg:text-xl'
 export const EXAMPLE_LETTER_TAILWIND_CLASSNAME = 'w-10 h-10 mx-1 text-xl py-1'
 export const KEYBOARD_LETTER_TAILWIND_CLASSNAME = 'hover:cursor-pointer w-7 h-10 m-1 p-2 text-sm md:w-10 md:h-12 md:px-3 md:text-lg lg:w-12 lg:h-11 lg:text-xl'
+
+export const ENTER_KEY_CHAR = '↵'
+export const BACKSPACE_KEY_CHAR = '⌫'
