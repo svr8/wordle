@@ -8,6 +8,10 @@ Mad
 Robber
 Stretch
 Frequent
+Sword
+Lamps
+Looks
+Works
 Numerous
 Soar
 Beseech
