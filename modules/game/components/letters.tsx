@@ -2,9 +2,14 @@ import { Letter } from "../../../lib/game/letter"
 import { BACKSPACE_KEY_CHAR, ENTER_KEY_CHAR, LETTER_CORRECT_STYLE, LETTER_DEFAULT_STYLE, LETTER_INCORRECT_STYLE, LETTER_KEYBOARD_DEFAULT_STYLE, LETTER_PARTIALLY_CORRECT_STYLE } from "../../../lib/game/config"
 import { useDispatch } from "react-redux"
 import { pressLetter } from "@/store/game/slice"
+import { animated, useChain, useSpring, useSpringRef, useTransition } from "@react-spring/web"
+import { useEffect } from "react"
+import { nudgeAnimation } from "@/lib/animation/nudge"
 
-export default function Letters({word, tailwindClassname}: {word: Letter[], tailwindClassname: String}) {
+export default function Letters({word, tailwindClassname, nudge = false}: {word: Letter[], tailwindClassname: String, nudge?: boolean}) {
   const dispatch = useDispatch()
+
+  const [leftNudgeStyle, leftNudgeStyleAPI] = useSpring(() => (nudgeAnimation.defaultStyle))
 
   const onLetterClick = (letter: Letter) => {
     if(letter.value == ENTER_KEY_CHAR) {
@@ -16,8 +21,19 @@ export default function Letters({word, tailwindClassname}: {word: Letter[], tail
     }
   }
 
+  useEffect(() => {
+    if (nudge) {
+      nudgeAnimation.frames.keyframes.map((timestamp, index) => {
+        setTimeout(() => {
+          leftNudgeStyleAPI.start(nudgeAnimation.frames.styles[index])
+        }, timestamp)
+      })
+    }
+  }, [nudge])
+
   return (
-    <div className="flex flex-row items-start">
+
+    <animated.div className="relative flex flex-row items-start" style={leftNudgeStyle}>
       {word.map((letter, i) => {
         const style = getLetterStyle(letter)
         return <div 
@@ -27,7 +43,8 @@ export default function Letters({word, tailwindClassname}: {word: Letter[], tail
           onClick={() => onLetterClick(letter)}
         >{letter.value}</div>
       })}
-    </div>
+    </animated.div>
+
   )
 }
 

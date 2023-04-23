@@ -8,6 +8,7 @@ export const gameSlice = createSlice({
     popupState: 'startmenu',
     pressedLetter: {value: '', state: ''},
     wordLength: 5,
+    nudgeAt: -1,
     results: {
       totalPlayed: 0,
       totalWon: 0,
@@ -44,6 +45,9 @@ export const gameSlice = createSlice({
       state.playState = 'stopped'
       state.previousPlayState = 'stopped'
     },
+    setNudgeAt: (state, action) => {
+      state.nudgeAt = action.payload
+    },
     setWordLength: (state, action) => {
       state.wordLength = action.payload
     },
@@ -62,6 +66,6 @@ export const gameSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { pressLetter, showHelp, showResults, closePopup, setWordLength, setResults, startGame, stopGame, showStartMenu } = gameSlice.actions
+export const { pressLetter, showHelp, showResults, closePopup, setNudgeAt, setWordLength, setResults, startGame, stopGame, showStartMenu } = gameSlice.actions
 
 export default gameSlice.reducer

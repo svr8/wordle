@@ -6,7 +6,7 @@ import Board from "../../modules/game/components/board"
 import { Letter } from "../../lib/game/letter"
 import { useEffect, useState } from "react"
 import StartMenu from "./startmenu"
-import { setResults, showResults, stopGame } from "@/store/game/slice"
+import { setNudgeAt, setResults, showResults, stopGame } from "@/store/game/slice"
 import { getRandomWord, isValidWord } from "@/lib/words"
 import { POPUP_ANIMATION_DELAY_MILLISECONDS } from "../../lib/game/config"
 
@@ -65,6 +65,12 @@ export default function Game() {
 
           // check if word is valid
           if (!(await isValidWord(currentWord)).isValid) {
+            if (currentWord.trim().length == wordLength) {
+              dispatch(setNudgeAt(attemptCount-1))
+              setTimeout(() => {
+                dispatch(setNudgeAt(-1))
+              }, 1000)
+            }
             return
           }
 
