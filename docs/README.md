@@ -32,27 +32,30 @@ There are some miscellaneous components that are specialized for this project. T
 
 # Key Problems Handled
 
-## Where to place game logic?
+## Scalability: Where to place game logic?
 
-There were 2 options: directly implement logic and update component state in the component where the event was triggered. Another was to pass all information up to parent components(various levels) and keep all logic in one place.
-The second one looks good but the the back-and-forth communication could make the codebase messy. This issue is discussed later in this document.
+There were 2 options: 
+* Component-Level Implementation: Directly handle logic and update component state in the component where the event was triggered. This means passing data upwards to parents and listening to response to make a decision based on states of other components.
 
-The idea is to keep the sub-components as independent as possible so they can be re- used in the future. This is why no logical decision was implemented inside the components placed in   folder. The modules are treated as pre-packaged solutions that can be interfaced with easily, and configured using props.
+* Global-Level Implementation: Pass all information up to parent components (various levels) and keep all logic in one place. 
+
+The second one looks good, but the back-and-forth communication could make the codebase messy. This issue is discussed later in this document.
+
+The idea is to keep the sub-components as independent as possible so they can be re- used in the future. This is why no logical decision was implemented inside the components placed in folder. The modules are treated as pre-packaged solutions that can be interfaced with easily and configured using props.
 
 ![core-game-logic.png](images/core-game-logic.png)
 
 This is why component events are listened to and handled in `/components/game.tsx` file. This file contains the core logic and implementation of all possible events occurring in the game.
 
-## How to simplify back-and-forth communication between various components, including multi-level nested components?
+## Data Flow: How to simplify back-and-forth communication between various components, including multi-level nested components?
 
 ![redux.png](images/redux.png)
 
-This core issue is addressed in Robotics greatly. The architecture or event-driven designs are widely used owing to the large amount of miscellaneous events happening all the time. `Redux` is a great solution to these problems and was used as a single channel to communicate between various components.
-was used to manage the complexity. 
+This core issue is addressed in Robotics greatly. The architecture or event-driven designs are widely used owing to the large number of miscellaneous events happening all the time. Redux is a great solution to these problems and was used as a single channel to communicate between various components. was used to manage the complexity.
 
 Efforts were made to keep all props passed to components to be one-way and remove all backward event handling and data propagation.
 
-## Making it configurable: Keeping the styling Tailwind-based only
+## Configurability: Keeping the styling Tailwind- based only
 
 ![configurable-css.png](images/configurable-css.png)
 
@@ -63,3 +66,4 @@ Similarly, other `constants` files have been created related to various sections
 # Conclusion
 
 The app was built took 5 days to build completely and deploy it. It was a fun experience brainstorming and identifying breakpoints and trying to make the app scalable.
+ 
