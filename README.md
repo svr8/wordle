@@ -45,6 +45,8 @@ npm i
 npm run dev
 ```
 
+The app will be live at [http://localhost:3000](http://localhost:3000).
+
 # Software Design Documentation
 
 
