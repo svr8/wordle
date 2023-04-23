@@ -26,6 +26,13 @@ This is a project for educational purposes only. The project showcases methods t
 
 # Run Locally
 
+1. Clone the repository:
+
+```
+git clone https://github.com/svr8/wordle
+```
+And, `cd` into it.
+
 1. Install Dependencies:
 
 ```
@@ -44,7 +51,7 @@ npm run dev
 This document aims to present the planning that went behind building this app. The app is a clone of the game Wordle. The app contains frontend modules primarily. A mock backend has been made to simulate a ‘Words API’ that was required for this project.
 
 **Tech Stack**: React, NextJS
-**Animation Library**: react-spring
+**Animation Library**: [react-spring](https://www.react-spring.dev/)
 
 The entire documentation is available [here](https://github.com/svr8/wordle/tree/main/docs#readme).
 
