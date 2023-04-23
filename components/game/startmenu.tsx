@@ -3,9 +3,8 @@ import PopupBox from "@/modules/game/components/popupbox"
 import { Letter } from "../../lib/game/letter"
 import { useDispatch } from "react-redux"
 import { setWordLength, startGame } from "@/store/game/slice"
-import { MAX_WORD_LENGTH, MIN_WORD_LENGTH } from "@/lib/words/const"
 import { useState } from "react"
-import { EXAMPLE_LETTER_TAILWIND_CLASSNAME } from "../../lib/game/config"
+import { EXAMPLE_LETTER_TAILWIND_CLASSNAME, MAX_WORD_LENGTH, MIN_WORD_LENGTH } from "../../lib/game/config"
 
 export default function StartMenu() {
   const dispatch = useDispatch()

@@ -1,4 +1,4 @@
-import { MAX_WORD_LENGTH } from "@/lib/words/const"
+import { MAX_WORD_LENGTH } from "@/lib/game/config"
 import { getRandomWordWithLength } from "./util"
 
 export default function handler(req: any, res: any) {

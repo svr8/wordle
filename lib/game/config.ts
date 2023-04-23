@@ -32,3 +32,6 @@ export const KEYBOARD_LETTER_TAILWIND_CLASSNAME = 'hover:cursor-pointer w-7 h-10
 
 export const ENTER_KEY_CHAR = '↵'
 export const BACKSPACE_KEY_CHAR = '⌫'
+
+export const MAX_WORD_LENGTH = 8
+export const MIN_WORD_LENGTH = 5
