@@ -17,7 +17,7 @@ export default function Letters({word, tailwindClassname, nudge = false}: {word:
     } else if (letter.value == BACKSPACE_KEY_CHAR) {
       dispatch(pressLetter({value: 'Backspace', state: 'default'}))
     } else {
-      dispatch(pressLetter(letter))
+      dispatch(pressLetter({...letter}))
     }
   }
 

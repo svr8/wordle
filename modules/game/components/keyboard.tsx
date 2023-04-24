@@ -15,7 +15,7 @@ export default function Keyboard({letterStates}: {letterStates: Letter[]}) {
   const onKeyPress = (event: KeyboardEvent) => {
     const letterMatch = letterStates.find((letter) => letter.value.toUpperCase() == event.key.toUpperCase())
     if (letterMatch) {
-      dispatch(pressLetter(letterMatch))
+      dispatch(pressLetter({...letterMatch}))
     } else if (isKeyboardEventLetter(event)) {
       dispatch(pressLetter({value: event.key.toUpperCase(), state: 'incorrect'}))
     }
